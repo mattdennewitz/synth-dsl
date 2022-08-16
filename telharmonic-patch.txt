@@ -1,0 +1,28 @@
+# dubby drone patch
+# modulate the telharmonic flux by hand,
+# never crossing noon counter-clockwise
+
+# tuned to c-minor
+res4 {
+  freq-1: 10k
+  freq-2: 8k
+  out > quad-vca.in-1
+}
+
+telharmonic {
+  degree: 1pm
+  flux: 80
+  centroid: 20
+  phase > res4.in
+}
+
+doepfer-slew {
+  mode: s&h
+  slew-rate: 20
+  out > res4.freq-cv-1
+}
+
+verbos-random {
+  white-noise > doepfer-slew.s&h-in & quad-vca.in-2
+  rand-trig-1 > doepfer-slew.s&h-trig-in
+}

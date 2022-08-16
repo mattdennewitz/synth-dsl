@@ -1,0 +1,35 @@
+<table>
+    <tr>
+        <td colspan="3">
+            <b>{{ module.name|escape }}</b>
+        </td>
+    </tr>
+
+    {% for socket in module.inputs %}
+        <tr>
+            <td colspan="3" port="{{ socket.get_key() }}">
+                {{ socket.display_text()|escape }}
+            </td>
+        </tr>
+    {% endfor %}
+
+    {% for socket in module.outputs %}
+        <tr>
+            <td colspan="3" port="{{ socket.get_key() }}">
+                {{ socket.display_text()|escape }}
+            </td>
+        </tr>
+    {% endfor %}
+
+    {% for key in module.values %}
+        {% for field in module.values[key] %}
+            <tr>
+                {% if loop.first and key != 'default' %}
+                    <td rowspan="{{ module.values[key]|length }}">{{ key }}</td>
+                {% endif %}
+                <td>{{ field.display_text()|escape }}</td>
+                <td {% if key == 'default' %}colspan="2"{% endif %}>{{ field.value|escape }}</td>
+            </tr>
+        {%  endfor %}
+    {% endfor %}
+</table>

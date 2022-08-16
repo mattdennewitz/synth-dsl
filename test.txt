@@ -1,0 +1,5 @@
+moda {
+  value: test
+  cv1.src: 100
+  cv1.aux: transpose
+}

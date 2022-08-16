@@ -1,0 +1,96 @@
+# generative tunes from just friends and o_c
+# this is clocked by running two just friends channels
+# through compare2
+
+brenso {
+  osc1: "between 10 and 11pm"
+  osc2: 9pm
+  wave-shaper: 9pm
+  wave-folder: 9pm
+  final > filter8.in1
+}
+
+o_c {
+  app: quantermain
+  cv1.src: o_c.cv2
+  cv1.aux: transpose
+  out1 > brenso.osc2-vo-in
+}
+
+verbos-multistage {
+  gate-out > o_c.clock1
+  cv-a > stages.level5
+}
+
+verbos-random {
+  flux-1: 10pm
+  cv1 > maths.chan2
+}
+
+maths {
+  chan2.att: "50% - less for slower melody gen"
+  chan2 > sportmod.cv-in & just-friends.v8 & o_c.cv1
+}
+
+just-friends {
+  intone: "8-10%"
+  ramp: "1-5%"
+  intone: noon
+  curve: noon
+  time: "9pm - increase for melody speed"
+  2n > stages.level3
+  6n > stages.level4
+  3n > compare2.in1
+  5n > compare2.in2
+}
+
+compare2 {
+  shift1: noon
+  size1: 1045pm
+  shift2: 11pm
+  size2: 1045pm
+  or > multistage.advance
+  and > a184-1.trig-in
+}
+
+sportmod {
+  top-cv: noon
+  top-sh: 0
+  top-out > stages.level6
+}
+
+stages {
+  chan3: orange
+  chan4: orange
+  chan5: orange
+  chan6: orange
+}
+
+a184-1 {
+  # used in sample-and-hold mode
+  mode: "s&h"
+  slew: "1-5%"
+}
+
+filter8 {
+  fine: 0
+  course: "between 25-50%"
+  res: "around noon"
+  res-mod: "around 25%"
+  hp1 > dld.in1
+  bp4 > praga.chan1-in
+}
+
+dld {
+  chan1.time: 8
+  chan1.tempo: "1/8th"
+  chan1.feedback: "55%"
+  chan1.feed: "80%"
+  chan1.mix: "65%"
+  chan2.time: 8
+  chan2.tempo: center
+  chan2.feedback: "65%"
+  chan2.feed: "80%"
+  chan2.mix: "65%"
+  out1 > praga.chan2-in
+}

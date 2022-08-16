@@ -1,0 +1,23 @@
+<table>
+    <tr>
+        <td colspan="2">
+            <b>{{ module.name }}</b>
+        </td>
+    </tr>
+
+    {% for field in module.get_io_fields() %}
+        <tr>
+            <td colspan="2" port="{{ field.port_key() }}">{{ field.display_text()|escape }}</td>
+        </tr>
+    {% endfor %}
+
+    {% for field in module.get_value_fields() %}
+        {% set value = field.value() %}
+        {% if value %}
+            <tr>
+                <td>{{ field.display_text() }}</td>
+                <td>{{ value }}</td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
